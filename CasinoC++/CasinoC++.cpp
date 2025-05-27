@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <windows.h>
 #include <string>
 using namespace std;
@@ -36,7 +36,8 @@ void print(string text = " ", int x = 0, int y = 0, ConsoleColor text_color = wh
     SetConsoleTextAttribute(handle, (WORD)((background << 4) | text_color));
     cout << text;
     SetConsoleTextAttribute(handle, (WORD)((black << 4) | white));
-}void print(int x = 0, int y = 0, ConsoleColor background = black)
+}
+void print(int x = 0, int y = 0, ConsoleColor background = black)
 {
     HANDLE handle;
     COORD coordinates;
@@ -58,9 +59,9 @@ string numbers[] = {
 
 void field()
 {
-    for (size_t i = 0; i < 61; i++)
+    for (size_t i = 0; i < 70; i++)
     {
-        for (size_t j = 0; j < 30; j++)
+        for (size_t j = 0; j < 40; j++)
         {
             print(i, j, lightGreen);
         }
@@ -97,10 +98,10 @@ void field()
     {
         for (size_t j = 0; j < 3; j++)
         {
-            print(5+j, i + 14, green);
+            print(5+j, i + 14, lightGreen);
         }
     }
-    print("0", 6, 18,white, green);
+    print("0", 6, 18, white, lightGreen);
     for (size_t k = 0; k < size(numbers); k++)
     {
         for (int i = 3; i >= 0; i--)
@@ -121,11 +122,68 @@ void field()
 #pragma endregion Field
 
 
+int roulete()
+{
+    int rnd;
+    for (size_t k = 0; k < 20; k++)
+    {
+        rnd = rand() % (size(numbers) + 1) - 1;
+        if (rnd == -1) {
+            for (size_t i = 0; i < 4; i++)
+            {
+                for (size_t j = 0; j < 3; j++)
+                {
+                    print(28 + i, 5 + j, lightGreen);
+                }
+            }
+            print("0", 29, 6, white, lightGreen);
+        }
+        else {
+            char color;
+            for (size_t i = 0; i < 4; i++)
+            {
+                for (size_t j = 0; j < 3; j++)
+                {
+                    color = numbers[rnd][2];
+                    print(28 + i, 5 + j, color == 'r' ? red : black);
+                }
+            }
+            string num = to_string(rnd + 1);
+            print(num, 29, 6, white, color == 'r' ? red : black);
+        }
+        Sleep(100);
+    }
+    return (rnd+1);
+}
+
 int main()
 {
     setlocale(0, "");
     srand(time(NULL));
     field();
+    int money = 1000;
+    print("Цвет     |  x2|   red|  black|       |", 4, 26);
+    print("Четность |  x2|  even|    odd|       |", 4, 27);
+    print("Половина |  x2| 1to18| 19to36|       |", 4, 28);
+    print("Дюжина   |  x3| 1to12| 13to24| 25to36|", 4, 29);
+    print("Ряд      |  x3| line1|  line2|  line3|", 4, 30);
+    print("Число    | x36|     0|     36|       |", 4, 31);
+    print("Выбор:        ", 4, 4);
+    print("              ", 4, 5);
+    print("Ставка:       ", 4, 6);
 
+    while (true) {
+        print("money: " + to_string(money), 42, 4);
+        string choice;
+        print("    ",7, 4);
+        cin >> choice;
+        int bet;
+        print("    ", 7, 6);
+        cin >> bet;
+        roulete();
+    }
+
+    
+    int pause; cin >> pause;
 }
 
