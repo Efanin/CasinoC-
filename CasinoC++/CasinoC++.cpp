@@ -162,25 +162,70 @@ int main()
     srand(time(NULL));
     field();
     int money = 1000;
-    print("Цвет     |  x2|   red|  black|       |", 4, 26);
-    print("Четность |  x2|  even|    odd|       |", 4, 27);
-    print("Половина |  x2| 1to18| 19to36|       |", 4, 28);
-    print("Дюжина   |  x3| 1to12| 13to24| 25to36|", 4, 29);
-    print("Ряд      |  x3| line1|  line2|  line3|", 4, 30);
-    print("Число    | x36|     0|     36|       |", 4, 31);
-    print("Выбор:        ", 4, 4);
-    print("              ", 4, 5);
-    print("Ставка:       ", 4, 6);
+    print("Color    |  x2|   red|  black|       |", 4, 26);
+    print("Even     |  x2|  even|    odd|       |", 4, 27);
+    print("Half     |  x2| 1to18| 19to36|       |", 4, 28);
+    print("12st     |  x3| 1to12| 13to24| 25to36|", 4, 29);
+    print("Row      |  x3| line1|  line2|  line3|", 4, 30);
+    print("Number   | x36|     0|     36|       |", 4, 31);
+    
 
     while (true) {
-        print("money: " + to_string(money), 42, 4);
+        print("money: " + to_string(money)+" \t ", 42, 4);
+        print("Choice:       ", 4, 4);
+        print("              ", 4, 5);
+        print("Bet   :       ", 4, 6);
         string choice;
-        print("    ",7, 4);
+        print(" ",11, 4);
         cin >> choice;
         int bet;
-        print("    ", 7, 6);
+        print(" ", 11, 6);
         cin >> bet;
-        roulete();
+        if (bet <= money and bet > 0)
+            money -= bet;
+        else
+            continue;
+        int num = roulete();
+        try
+        {
+            int x = stoi(choice);
+            if (x == num)
+            {
+                money += bet * 36;
+                print("WIN!", 42, 6, white, magenta);
+            }
+            else
+            {
+                print("lose", 42, 6, white, brown);
+            }
+        }
+        catch (const std::exception&)
+        {
+            if (choice == "red")
+            {
+                if (numbers[num - 1][2] == 'r' and num != 0)
+                {
+                    money += bet * 2;
+                    print("WIN!", 42, 6, white, magenta);
+                }
+                else 
+                {
+                    print("lose", 42, 6, white, brown);
+                }
+            }
+            if (choice == "black")
+            {
+                if (numbers[num - 1][2] == 'b' and num != 0)
+                {
+                    money += bet * 2;
+                    print("WIN!", 42, 6, white, magenta);
+                }
+                else
+                {
+                    print("lose", 42, 6, white, brown);
+                }
+            }
+        }
     }
 
     
